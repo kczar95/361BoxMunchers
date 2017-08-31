@@ -10,5 +10,15 @@ package ist361round1;
  * @author lap5508
  */
 public class NavigationController {
+ 
+    NavigationView theNavigation;
+    
+    public NavigationController() {
+        this.theNavigation = new NavigationView(this);
+    }
+    
+    public void toMainMenu(){
+         this.theNavigation.setVisible(true); 
+    }
     
 }
