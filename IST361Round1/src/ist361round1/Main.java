@@ -15,29 +15,6 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args){
-        
-        
-        try {
-            // Set System L&F
-//        UIManager.setLookAndFeel(
-//            UIManager.getSystemLookAndFeelClassName());
-            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-    } 
-    catch (UnsupportedLookAndFeelException e) {
-       // handle exception
+      NavigationController cntl = new NavigationController();     
     }
-    catch (ClassNotFoundException e) {
-       // handle exception
-    }
-    catch (InstantiationException e) {
-       // handle exception
-    }
-    catch (IllegalAccessException e) {
-       // handle exception
-    }
-        NavigationController theNavigationCntl = new NavigationController();
-
-    }
-    
 }

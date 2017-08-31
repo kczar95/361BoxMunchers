@@ -5,10 +5,18 @@
  */
 package ist361round1;
 
+import java.net.HttpURLConnection;
+
 /**
  *
  * @author lap5508
  */
 public class GameModel {
+    private String connectionURL = "https://boxmunchers-6c015.firebaseio.com/";
     
+    private HttpURLConnection connectToDB(String method) {
+        
+        
+        return null;
+    }
 }
