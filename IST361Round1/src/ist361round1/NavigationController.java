@@ -10,5 +10,13 @@ package ist361round1;
  * @author lap5508
  */
 public class NavigationController {
+    private HighScoreView theHighScoreView;
+    private GameView theGameView;
+    private NavigationView theNavigationView;
     
+    public NavigationController(){                  
+        theNavigationView = new NavigationView(this);
+        theNavigationView.setLocationRelativeTo(null);
+        theNavigationView.setVisible(true);
+    }
 }
