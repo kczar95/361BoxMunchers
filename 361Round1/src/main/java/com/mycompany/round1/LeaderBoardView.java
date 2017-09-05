@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
@@ -23,6 +24,9 @@ public class LeaderBoardView extends JFrame{
     private JPanel titlePanel;
     private JPanel scorePanel;
     private JPanel backPanel;
+    private JTable scoresTable;
+    private Object rowData[][];
+    private Object columnNames[];
     private JTextArea theScoresField;
     private JLabel leaderBoardLabel;
     private JLabel nameLabel;
@@ -38,7 +42,7 @@ public class LeaderBoardView extends JFrame{
         createScoreBoard();
         createBackButton();
         
-        setBounds(0, 0, 450, 650);
+        setBounds(0, 0, 200, 300);
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     }
     
@@ -50,10 +54,15 @@ public class LeaderBoardView extends JFrame{
     }
     
     private void createScoreBoard(){
-        scorePanel = new JPanel();       
-        //scorePanel.setLayout(new GridLayout(2,2,0,0));      
-        theScoresField = new JTextArea(60, 30);
-        scorePanel.add(theScoresField);
+        scorePanel = new JPanel();             
+        Object rowData[][] = {{"Test Player 1", "Test Score 1"}, {"Test Player 2", "Test Score 2"}, 
+                             {"Test Player 3", "Test Score 3"}, 
+                             {"Test Player 4", "Test Score 4"}, {"Test Player 5", "Test Score 5"}};
+        Object columnNames[] = {"Player Name", "Score"};
+        
+        scoresTable = new JTable(rowData, columnNames);
+        
+        scorePanel.add(scoresTable);
             add(scorePanel, BorderLayout.CENTER);
     }
     
