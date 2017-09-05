@@ -11,4 +11,7 @@ package com.mycompany.round1;
  */
 public class GameController {
     
+    public GameController(NavigationController parentNavControl){
+        
+    }
 }

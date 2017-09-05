@@ -19,4 +19,7 @@ public class NavigationController {
         theNavigationView.setLocationRelativeTo(null);
         theNavigationView.setVisible(true);
     }
+    public void requestGameController(){
+        
+    }
 }
