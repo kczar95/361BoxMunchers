@@ -26,22 +26,12 @@ public class GameModel {
     
     public GameModel () {
         currLeaders = read();
-        currLeaders = new ArrayList<String>();
-        currLeaders.add("Chandler");
-        currLeaders.add("100");
-        currLeaders.add("Ahkil");
-        currLeaders.add("100");
-        currLeaders.add("Luke");
-        currLeaders.add("100");
-        currLeaders.add("Justin");
-        currLeaders.add("100");
+    }
+    
+    //this will take in the curr users score / name and return a boolean if they are on the leaderboard
+    public boolean submitScore (ArrayList<String> currNameScore) {
         
-        try {
-            write(currLeaders);
-            
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        return false;
     }
     
     private HttpURLConnection connectToDB(String method) throws Exception{
@@ -52,7 +42,6 @@ public class GameModel {
             con.setDoInput(true);
             con.setRequestProperty("Content-Type", "application/json");
             con.setRequestProperty("Accept", "application/json");
-            con.setRequestProperty("X-HTTP-Method-Override", "PATCH");
             con.setRequestMethod(method);
             
         return con;
@@ -60,7 +49,9 @@ public class GameModel {
     
     public void write (ArrayList<String> leaderboard) {
         try {
+            connectionURL = "https://boxmunchers-6c015.firebaseio.com/leaderboard.json";
             HttpURLConnection connection = connectToDB("POST");
+            connection.setRequestProperty("X-HTTP-Method-Override", "PATCH");
             Gson gson = new Gson();
             String data = gson.toJson(leaderboard);
             
@@ -80,34 +71,26 @@ public class GameModel {
         
     }
     
-    //this will take in the curr users score / name and return a boolean if they are on the leaderboard
-    public boolean submitScore (ArrayList<String> currNameScore) {
-        
-        return false;
-    }
-    
     public ArrayList<String> read () {
         ArrayList<String> leaders = null;
+        String inputLine = "";
+        connectionURL = "https://boxmunchers-6c015.firebaseio.com/leaderboard/leaders.json";
         
-//        try {
-//            HttpURLConnection connection = connectToDB("GET");
-//            BufferedReader in = new BufferedReader(
-//                    new InputStreamReader(connection.getInputStream()));
-//        } catch (Exception ex) {
-//            Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        
-//        
-//
-//        try {
-//            String inputLine = in.readLine();
-//        } catch (IOException ex) {
-//            Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        try {
+            HttpURLConnection connection = connectToDB("GET");
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(connection.getInputStream()));
+            inputLine = in.readLine();
+            
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        
+        System.out.println(inputLine);
+        Gson gson = new Gson();
+        leaders = gson.fromJson(inputLine, ArrayList.class);
+        System.out.println(leaders.toString());
         
         return leaders;
     }
-    
-    
-    
 }
