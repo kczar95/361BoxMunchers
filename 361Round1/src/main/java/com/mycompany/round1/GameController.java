@@ -10,8 +10,11 @@ package com.mycompany.round1;
  * @author lap5508
  */
 public class GameController {
+    private GameView theGameView;
     
-    public GameController(NavigationController parentNavControl){
-        
+    public GameController(){
+        theGameView = new GameView(this);
+        theGameView.setLocationRelativeTo(null);
+        theGameView.setVisible(true);
     }
 }

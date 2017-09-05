@@ -15,11 +15,9 @@ public class NavigationController {
     private NavigationView theNavigationView;
     
     public NavigationController(){                  
-        theNavigationView = new NavigationView(this);
+        //theNavigationView = new NavigationView(this);
         theNavigationView.setLocationRelativeTo(null);
         theNavigationView.setVisible(true);
     }
-    public void requestGameController(){
-        
-    }
+    
 }

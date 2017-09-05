@@ -14,26 +14,36 @@ import javax.swing.JPanel;
  *
  * @author lap5508
  */
-public class GameView extends JFrame{
+public final class GameView extends JFrame {
+
     private JPanel gamePanel;
     private JButton boardPiece;
-    GridLayout boardGrid = new GridLayout(9,9);
+    GridLayout boardGrid = new GridLayout(9, 9);
     JButton[][] gameBoard = new JButton[9][9];
 
-public GameView(GameController g_control){
-    createGameBoardPanel();
-    setBounds(0, 0, 650, 650);
-    setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-}
-public void createGameBoardPanel(){
-    gamePanel = new JPanel();
-    boardPiece = new JButton("test");
-    gamePanel.setLayout(boardGrid);
-    gameBoard = new JButton[9][9];
-    for(int i =0;i<9;i++){
-        for(int j=0;j<9;j++){
-            add(boardPiece);
+    public GameView(GameController g_control) {
+        setBounds(0, 0, 650, 650);
+        createGameBoardPanel();
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+    }
+
+    public void createGameBoardPanel() {
+        gamePanel = new JPanel();
+        add(gamePanel);
+        GridLayout grid = new GridLayout(9,9);
+        gameBoard = new JButton[9][9];
+        gamePanel.setLayout(grid);
+        JButton[][] boardSquares = new JButton[9][9];
+        for (int i=0; i<9;i++)
+        {
+            for(int j=0; j<9;j++)
+            {
+                if(gameBoard[i][j] == null ){
+                    boardSquares[i][j] = new JButton("test");
+                    gamePanel.add(boardSquares[i][j]);
+                }
+            }
         }
     }
-}
+    
 }
