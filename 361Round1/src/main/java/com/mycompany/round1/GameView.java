@@ -23,7 +23,7 @@ import javax.swing.SwingConstants;
  */
 public final class GameView extends JFrame {
     
-    private GameController gControl = null;
+    private NavigationController nControl = null;
     
     //info panel components
     private JPanel infoPanel;
@@ -44,8 +44,8 @@ public final class GameView extends JFrame {
     GridLayout boardGrid = new GridLayout(9, 9);
     JButton[][] gameBoard = new JButton[9][9];
 
-    public GameView(GameController g_control) {
-        gControl = g_control;       
+    public GameView(NavigationController n_control) {
+        nControl = n_control;       
         createInfoPanel();
         createGameBoardPanel();
         this.setVisible(true);
@@ -108,7 +108,6 @@ public final class GameView extends JFrame {
     }
     
     private void leaderboardButtonActionPerformed(ActionEvent evt){
-        GameView.this.gControl.showLeaderBoard();
-        this.setVisible(false);
+        GameView.this.nControl.showLeaderBoard();
     }
 }

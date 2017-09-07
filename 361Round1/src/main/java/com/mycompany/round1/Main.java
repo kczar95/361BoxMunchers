@@ -15,8 +15,8 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args){
-      //NavigationController cntl = new NavigationController();
+      NavigationController cntl = new NavigationController();
       //GameController cntl2 = new GameController();
-      GameModel gasd = new GameModel();
+      //GameModel gasd = new GameModel();
     }
 }

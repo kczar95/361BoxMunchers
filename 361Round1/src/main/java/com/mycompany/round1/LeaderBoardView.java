@@ -7,6 +7,7 @@ package com.mycompany.round1;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -43,7 +44,7 @@ public class LeaderBoardView extends JFrame{
         createBackButton();
         
         setBounds(0, 0, 200, 300);
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
     }
     
     private void createLabel(){
@@ -69,8 +70,18 @@ public class LeaderBoardView extends JFrame{
     private void createBackButton(){
         backPanel = new JPanel();
         backButton = new JButton("Back");
+        backButton.addActionListener(new java.awt.event.ActionListener(){
+                public void actionPerformed(java.awt.event.ActionEvent evt){
+                    backButtonActionPerformed(evt);
+                }
+            });
         backPanel.add(backButton);
         add(backPanel,BorderLayout.SOUTH);
+    }
+    
+    private void backButtonActionPerformed(ActionEvent evt){
+        LeaderBoardView.this.theNavCntl.hideLeaderBoard();
+        //this.setVisible(false);
     }
     
 }
