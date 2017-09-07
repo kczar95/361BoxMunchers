@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.round1;
 
 import java.util.ArrayList;
@@ -29,6 +24,12 @@ public class GameController {
     public void showLeaderBoard() {
         //theLeaderBoardView = new LeaderBoardView(this);
         theLeaderBoardView.setVisible(true);
+    }
+    
+    //this method will be run when the PLay button is clicked on
+    public void play()
+    {
+        
     }
 
     public void getNewLeader(int theScore) {
@@ -81,7 +82,6 @@ public class GameController {
                     int primeCheck = boxNumber % i;
                     prime = primeCheck == 0;
                 }
-
                 return prime;
         }
     }

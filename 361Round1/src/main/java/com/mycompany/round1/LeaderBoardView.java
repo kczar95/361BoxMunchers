@@ -44,6 +44,7 @@ public class LeaderBoardView extends JFrame{
         createBackButton();
         
         setBounds(0, 0, 200, 300);
+        setResizable(false);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
     }
     
