@@ -41,7 +41,7 @@ public class GameController {
         theScoreAndPlayer.add(name);
         theScoreAndPlayer.add(score);
         if(placed){
-            theGameModel.submitScore();
+            theGameModel.submitScore(theScoreAndPlayer);
             theNavCntl.showLeaderBoard();
         }
         else{
