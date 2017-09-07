@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.round1;
 
 import java.awt.BorderLayout;
@@ -16,10 +11,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerListModel;
 import javax.swing.SwingConstants;
 import java.lang.Math;
-/**
- *
- * @author lap5508
- */
+
 public final class GameView extends JFrame {
     
     private GameController gControl = null;
@@ -90,8 +82,10 @@ public final class GameView extends JFrame {
         infoPanel.add(multipleOf_Spinner);
         add(infoPanel, BorderLayout.NORTH);       
     }
+    
+    //Creating the values for each button
     public double[][] createGameData(){
-        double[][] tempData = new double[9][9];
+        int[][] tempData = new int[9][9];
         for(int i=0;i<tempData.length;i++){
             for(int j=0;j<tempData.length;j++){
                 if(tempData[i][j] == 0){
@@ -103,7 +97,7 @@ public final class GameView extends JFrame {
     }
     
     
-    public void createGameBoardPanel(double[][] gameData) {
+    public void createGameBoardPanel(int[][] gameData) {
         gamePanel = new JPanel();
         add(gamePanel);
         GridLayout grid = new GridLayout(9,9);
@@ -114,9 +108,10 @@ public final class GameView extends JFrame {
         {
             for(int j=0; j<9;j++)
             {
-                if(gameBoard[i][j] == null ){
-                    double tempNum = gameData[i][j];
-                    boardSquares[i][j] = new JButton();
+                //Create buttons and add their values
+                if(gameBoard[i][j] == null )
+                {
+                    boardSquares[i][j] = new JButton(Integer.toString(gameData[i][j]));
                     gamePanel.add(boardSquares[i][j]);
                 }
             }
