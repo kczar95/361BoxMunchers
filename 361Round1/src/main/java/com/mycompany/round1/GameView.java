@@ -46,6 +46,7 @@ public final class GameView extends JFrame {
         nControl = n_control;
         multipleOf_Spinner = new JSpinner();
         createInfoPanel();
+        gameData = createGameData();
         createGameBoardPanel(gameData);
         this.setVisible(true);
         setBounds(0, 0, 650, 650);
