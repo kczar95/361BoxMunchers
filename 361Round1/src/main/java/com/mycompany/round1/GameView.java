@@ -10,7 +10,6 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerListModel;
 import javax.swing.SwingConstants;
-import java.lang.Math;
 
 public final class GameView extends JFrame {
     
@@ -20,8 +19,8 @@ public final class GameView extends JFrame {
     private JPanel infoPanel;
     private JLabel scoreLabel;
     private String[] multipleValues = {"3", "5", "7"};
-    private SpinnerListModel multipleModel = new SpinnerListModel(multipleValues);
-    private JSpinner multipleOf_Spinner = new JSpinner(multipleModel);
+    private SpinnerListModel multipleModel;
+    private final JSpinner multipleOf_Spinner;
     private JButton playButton;
     private JButton pauseButton;
     private JLabel gameLabel;
@@ -36,9 +35,11 @@ public final class GameView extends JFrame {
     JButton[][] gameBoard = new JButton[9][9];
     
     //game board data
-    private double[][] gameData = new double[9][9];
+    private int[][] gameData;
 
     public GameView(GameController g_control) {
+        this.multipleOf_Spinner = new JSpinner(multipleModel);
+        this.multipleModel = new SpinnerListModel(multipleValues);
         gControl = g_control;
         gameData = createGameData();
         createInfoPanel();
@@ -65,11 +66,9 @@ public final class GameView extends JFrame {
             //
             //
         leaderboardButton = new JButton("Leaderboard");
-            leaderboardButton.addActionListener(new java.awt.event.ActionListener(){
-                public void actionPerformed(java.awt.event.ActionEvent evt){
-                    leaderboardButtonActionPerformed(evt);
-                }
-            });
+            leaderboardButton.addActionListener((java.awt.event.ActionEvent evt) -> {
+                leaderboardButtonActionPerformed(evt);
+        });
             //
         scoreLabel = new JLabel("Score:", SwingConstants.CENTER);
             //
@@ -84,12 +83,12 @@ public final class GameView extends JFrame {
     }
     
     //Creating the values for each button
-    public double[][] createGameData(){
+    public int[][] createGameData(){
         int[][] tempData = new int[9][9];
         for(int i=0;i<tempData.length;i++){
             for(int j=0;j<tempData.length;j++){
                 if(tempData[i][j] == 0){
-                    tempData[i][j] = (Math.random() * 100);
+                    tempData[i][j] = (int) (Math.random() * 100);
                 }
             }
         }
