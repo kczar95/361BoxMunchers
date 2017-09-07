@@ -5,28 +5,89 @@
  */
 package com.mycompany.round1;
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerListModel;
+import javax.swing.SwingConstants;
 
 /**
  *
  * @author lap5508
  */
 public final class GameView extends JFrame {
-
+    
+    private GameController gControl = null;
+    
+    //info panel components
+    private JPanel infoPanel;
+    private JLabel scoreLabel;
+    private String[] multipleValues = {"3", "5", "7"};
+    private SpinnerListModel multipleModel = new SpinnerListModel(multipleValues);
+    private JSpinner multipleOf_Spinner = new JSpinner(multipleModel);
+    private JButton playButton;
+    private JButton pauseButton;
+    private JLabel gameLabel;
+    private JButton leaderboardButton;
+    GridLayout infoGrid = new GridLayout(2, 3);
+    
+    
+    //game board components
     private JPanel gamePanel;
     private JButton boardPiece;
     GridLayout boardGrid = new GridLayout(9, 9);
     JButton[][] gameBoard = new JButton[9][9];
 
     public GameView(GameController g_control) {
-        setBounds(0, 0, 650, 650);
+        gControl = g_control;       
+        createInfoPanel();
         createGameBoardPanel();
+        this.setVisible(true);
+        setBounds(0, 0, 650, 650);
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     }
-
+    
+    public void createInfoPanel(){
+        infoPanel = new JPanel();
+        GridLayout infoGrid = new GridLayout(2,3, 0, 50);
+        infoPanel.setLayout(infoGrid);
+        playButton = new JButton("Play");
+            //
+            //
+        pauseButton = new JButton("Pause");
+            //
+            //
+        gameLabel = new JLabel("Multiple Of:", SwingConstants.CENTER);
+            //
+            //
+        //multipleOf_Spinner = new JSpinner("Multiple of:");
+            //
+            //
+        leaderboardButton = new JButton("Leaderboard");
+            leaderboardButton.addActionListener(new java.awt.event.ActionListener(){
+                public void actionPerformed(java.awt.event.ActionEvent evt){
+                    leaderboardButtonActionPerformed(evt);
+                }
+            });
+            //
+        scoreLabel = new JLabel("Score:", SwingConstants.CENTER);
+            //
+            //
+        infoPanel.add(playButton);
+        infoPanel.add(pauseButton);
+        infoPanel.add(leaderboardButton);
+        infoPanel.add(scoreLabel);
+        infoPanel.add(gameLabel);
+        infoPanel.add(multipleOf_Spinner);
+        add(infoPanel, BorderLayout.NORTH);       
+    }
+    
     public void createGameBoardPanel() {
         gamePanel = new JPanel();
         add(gamePanel);
@@ -46,4 +107,8 @@ public final class GameView extends JFrame {
         }
     }
     
+    private void leaderboardButtonActionPerformed(ActionEvent evt){
+        GameView.this.gControl.showLeaderBoard();
+        this.setVisible(false);
+    }
 }

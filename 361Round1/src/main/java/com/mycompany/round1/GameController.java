@@ -11,10 +11,16 @@ package com.mycompany.round1;
  */
 public class GameController {
     private GameView theGameView;
+    private LeaderBoardView theLeaderBoardView;
     
     public GameController(){
         theGameView = new GameView(this);
         theGameView.setLocationRelativeTo(null);
         theGameView.setVisible(true);
+    }
+    
+    public void showLeaderBoard(){
+        theLeaderBoardView = new LeaderBoardView(this);
+        theLeaderBoardView.setVisible(true);
     }
 }
