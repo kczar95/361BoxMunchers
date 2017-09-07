@@ -12,102 +12,77 @@ import java.util.ArrayList;
  * @author lap5508
  */
 public class GameController {
+
     //private GameView theGameView;
     private LeaderBoardView theLeaderBoardView;
     private NavigationController theNavCntl;
     private GameModel theGameModel;
     private String name;
     private String score;
-    
+
     /*
     public GameController(){
         theGameView = new GameView(this);
         theGameView.setLocationRelativeTo(null);
         theGameView.setVisible(true);
     }*/
-    
-    public void showLeaderBoard(){
+    public void showLeaderBoard() {
         //theLeaderBoardView = new LeaderBoardView(this);
         theLeaderBoardView.setVisible(true);
     }
-    
-    public void getNewLeader(int theScore){
+
+    public void getNewLeader(int theScore) {
         theNavCntl = new NavigationController();
         theGameModel = new GameModel();
         name = "";
         boolean placed = theGameModel.checkScore(theScore);
-        score = String.valueOf(theScore);     
+        score = String.valueOf(theScore);
         ArrayList<String> theScoreAndPlayer = new ArrayList();
         theScoreAndPlayer.add(name);
         theScoreAndPlayer.add(score);
-        if(placed){
+        if (placed) {
             theGameModel.submitScore(theScoreAndPlayer);
             theNavCntl.showLeaderBoard();
-        }
-        else{
+        } else {
             theNavCntl.showLeaderBoard();
         }
     }
-    
+
     //gameMode is a 1,2 or 3; 1=MULTIPLES,2=FACTORS,3=PRIMES.
     //boxNumber is the value in the box.
     //gameValue is the value set to compare to the box.
     //correctBox returns int correct as true or false.
-    public boolean correctBox(int gameMode, int boxNumber, int gameValue){
-        int answerCheck = 0;
-        boolean correct = false;
-        boolean prime = false;
+    public boolean correctBox(int gameMode, int boxNumber, int gameValue) {
+        int answerCheck;
         
-        if(gameMode==1){
-            //MULTIPLES
-            answerCheck = boxNumber % gameValue;
-            if(answerCheck!=0){
-                correct = false;
-            }
-            else{
-                correct = true;
-            }
+        switch (gameMode) {
+            case 1:
+                answerCheck = boxNumber % gameValue;
+                return answerCheck == 0;
+            case 2:
+                answerCheck = gameValue % boxNumber;
+                return answerCheck == 0;
+            default:
+                return isPrime(boxNumber);
         }
-        else if(gameMode==2){
-            //FACTORS
-            answerCheck = gameValue % boxNumber;
-            if(answerCheck!=0){
-                correct = false;
-            }
-            else{
-                correct = true;
-            }
-        }
-        else{
-            //PRIME
-            if(boxNumber==0){
-                prime = false;
-            }
-            else if(boxNumber==1){
-                prime = true;
-            }
-            else if(boxNumber==2){
-                prime = false;
-            }
-            else{
-                for(int i=boxNumber-1; i>2; i--){
+    }
+
+    private boolean isPrime(int boxNumber) {
+        switch (boxNumber) {
+            case 0:
+                return false;
+            case 1:
+                return true;
+            case 2:
+                return false;
+            default:
+                boolean prime = false;
+                for (int i = boxNumber - 1; i > 2; i--) {
                     int primeCheck = boxNumber % i;
-                    if(primeCheck!=0){
-                        prime = false;
-                    }
-                    else {
-                        prime = true;
-                    }
+                    prime = primeCheck == 0;
                 }
-            }
-            
-            if(prime==true){
-                correct = true;
-            }
-            else {
-                correct = false;
-            }
+
+                return prime;
         }
-        return correct;
     }
 }
