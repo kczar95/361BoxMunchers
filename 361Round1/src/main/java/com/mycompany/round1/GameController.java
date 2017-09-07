@@ -48,4 +48,66 @@ public class GameController {
             theNavCntl.showLeaderBoard();
         }
     }
+    
+    //gameMode is a 1,2 or 3; 1=MULTIPLES,2=FACTORS,3=PRIMES.
+    //boxNumber is the value in the box.
+    //gameValue is the value set to compare to the box.
+    //correctBox returns int correct as true or false.
+    public boolean correctBox(int gameMode, int boxNumber, int gameValue){
+        int answerCheck = 0;
+        boolean correct = false;
+        boolean prime = false;
+        
+        if(gameMode==1){
+            //MULTIPLES
+            answerCheck = boxNumber % gameValue;
+            if(answerCheck!=0){
+                correct = false;
+            }
+            else{
+                correct = true;
+            }
+        }
+        else if(gameMode==2){
+            //FACTORS
+            answerCheck = gameValue % boxNumber;
+            if(answerCheck!=0){
+                correct = false;
+            }
+            else{
+                correct = true;
+            }
+        }
+        else{
+            //PRIME
+            if(boxNumber==0){
+                prime = false;
+            }
+            else if(boxNumber==1){
+                prime = true;
+            }
+            else if(boxNumber==2){
+                prime = false;
+            }
+            else{
+                for(int i=boxNumber-1; i>2; i--){
+                    int primeCheck = boxNumber % i;
+                    if(primeCheck!=0){
+                        prime = false;
+                    }
+                    else {
+                        prime = true;
+                    }
+                }
+            }
+            
+            if(prime==true){
+                correct = true;
+            }
+            else {
+                correct = false;
+            }
+        }
+        return correct;
+    }
 }
