@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,12 +27,48 @@ public class GameModel {
     
     public GameModel () {
         currLeaders = read();
+        System.out.println(currLeaders.toString());
+        submitScore(new ArrayList<String>(Arrays.asList("Daniel","120")));
+    }
+    
+    public boolean checkScore (int score) {
+        currLeaders = read();
+        if(currLeaders.size() < 10) {
+            return true;
+        } else {
+            //else, check if it is greater then any of them, if so remove that one and add this one
+            int currSmallestLocation = 1;
+            int currSmallest = 9999;
+            for(int i = 1; i < currLeaders.size(); i += 2){
+                //System.out.println(currLeaders.get(i));
+                if(Integer.parseInt(currLeaders.get(i)) < currSmallest){
+                    currSmallestLocation = i;
+                    currSmallest = Integer.parseInt(currLeaders.get(i));
+                    System.out.println(currSmallest);
+                    System.out.println(currSmallestLocation);
+                }
+            }
+            if(score > currSmallest){
+                currLeaders.remove(currSmallestLocation - 1);
+                currLeaders.remove(currSmallestLocation - 1);
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
     
     //this will take in the curr users score / name and return a boolean if they are on the leaderboard
-    public boolean submitScore (ArrayList<String> currNameScore) {
+    public void submitScore (ArrayList<String> currNameScore) {
+        currLeaders.add(currNameScore.get(0));
+        currLeaders.add(currNameScore.get(1));
         
-        return false;
+        write(currLeaders);
+    }
+    
+    public ArrayList<String> getLeaders() {
+        currLeaders = read();
+        return currLeaders;
     }
     
     private HttpURLConnection connectToDB(String method) throws Exception{
@@ -56,7 +93,6 @@ public class GameModel {
             String data = gson.toJson(leaderboard);
             
             String leaders = "{ \"leaders\":" + data + "}";
-            System.out.println(leaders);
             OutputStreamWriter osw = new OutputStreamWriter(connection.getOutputStream());
             osw.write(leaders);
             osw.flush();
@@ -86,10 +122,8 @@ public class GameModel {
             e.printStackTrace();
         }
         
-        System.out.println(inputLine);
         Gson gson = new Gson();
         leaders = gson.fromJson(inputLine, ArrayList.class);
-        System.out.println(leaders.toString());
         
         return leaders;
     }

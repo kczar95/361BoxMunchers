@@ -17,10 +17,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerListModel;
 import javax.swing.SwingConstants;
 
-/**
- *
- * @author lap5508
- */
+
 public final class GameView extends JFrame {
     
     private NavigationController nControl = null;
@@ -29,8 +26,8 @@ public final class GameView extends JFrame {
     private JPanel infoPanel;
     private JLabel scoreLabel;
     private String[] multipleValues = {"3", "5", "7"};
-    private SpinnerListModel multipleModel = new SpinnerListModel(multipleValues);
-    private JSpinner multipleOf_Spinner = new JSpinner(multipleModel);
+    private SpinnerListModel multipleModel;
+    private final JSpinner multipleOf_Spinner;
     private JButton playButton;
     private JButton pauseButton;
     private JLabel gameLabel;
@@ -43,11 +40,14 @@ public final class GameView extends JFrame {
     private JButton boardPiece;
     GridLayout boardGrid = new GridLayout(9, 9);
     JButton[][] gameBoard = new JButton[9][9];
+    
+    //game board data
+    private int[][] gameData;
 
     public GameView(NavigationController n_control) {
         nControl = n_control;       
         createInfoPanel();
-        createGameBoardPanel();
+        createGameBoardPanel(gameData);
         this.setVisible(true);
         setBounds(0, 0, 650, 650);
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -70,11 +70,10 @@ public final class GameView extends JFrame {
             //
             //
         leaderboardButton = new JButton("Leaderboard");
-            leaderboardButton.addActionListener(new java.awt.event.ActionListener(){
-                public void actionPerformed(java.awt.event.ActionEvent evt){
-                    leaderboardButtonActionPerformed(evt);
+            leaderboardButton.addActionListener((java.awt.event.ActionEvent evt) -> {
+                leaderboardButtonActionPerformed(evt);
                 }
-            });
+        });
             //
         scoreLabel = new JLabel("Score:", SwingConstants.CENTER);
             //
@@ -88,7 +87,21 @@ public final class GameView extends JFrame {
         add(infoPanel, BorderLayout.NORTH);       
     }
     
-    public void createGameBoardPanel() {
+    //Creating the values for each button
+    public int[][] createGameData(){
+        int[][] tempData = new int[9][9];
+        for(int i=0;i<tempData.length;i++){
+            for(int j=0;j<tempData.length;j++){
+                if(tempData[i][j] == 0){
+                    tempData[i][j] = (int) (Math.random() * 100);
+                }
+            }
+        }
+        return tempData; 
+    }
+    
+    
+    public void createGameBoardPanel(int[][] gameData) {
         gamePanel = new JPanel();
         add(gamePanel);
         GridLayout grid = new GridLayout(9,9);
@@ -99,8 +112,10 @@ public final class GameView extends JFrame {
         {
             for(int j=0; j<9;j++)
             {
-                if(gameBoard[i][j] == null ){
-                    boardSquares[i][j] = new JButton("test");
+                //Create buttons and add their values
+                if(gameBoard[i][j] == null )
+                {
+                    boardSquares[i][j] = new JButton(Integer.toString(gameData[i][j]));
                     gamePanel.add(boardSquares[i][j]);
                 }
             }
