@@ -7,7 +7,6 @@ package com.mycompany.round1;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,7 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerListModel;
 import javax.swing.SwingConstants;
-
+import java.lang.Math;
 /**
  *
  * @author lap5508
@@ -43,11 +42,15 @@ public final class GameView extends JFrame {
     private JButton boardPiece;
     GridLayout boardGrid = new GridLayout(9, 9);
     JButton[][] gameBoard = new JButton[9][9];
+    
+    //game board data
+    private double[][] gameData = new double[9][9];
 
     public GameView(GameController g_control) {
-        gControl = g_control;       
+        gControl = g_control;
+        gameData = createGameData();
         createInfoPanel();
-        createGameBoardPanel();
+        createGameBoardPanel(gameData);
         this.setVisible(true);
         setBounds(0, 0, 650, 650);
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -87,8 +90,20 @@ public final class GameView extends JFrame {
         infoPanel.add(multipleOf_Spinner);
         add(infoPanel, BorderLayout.NORTH);       
     }
+    public double[][] createGameData(){
+        double[][] tempData = new double[9][9];
+        for(int i=0;i<tempData.length;i++){
+            for(int j=0;j<tempData.length;j++){
+                if(tempData[i][j] == 0){
+                    tempData[i][j] = (Math.random() * 100);
+                }
+            }
+        }
+        return tempData; 
+    }
     
-    public void createGameBoardPanel() {
+    
+    public void createGameBoardPanel(double[][] gameData) {
         gamePanel = new JPanel();
         add(gamePanel);
         GridLayout grid = new GridLayout(9,9);
@@ -100,7 +115,8 @@ public final class GameView extends JFrame {
             for(int j=0; j<9;j++)
             {
                 if(gameBoard[i][j] == null ){
-                    boardSquares[i][j] = new JButton("test");
+                    double tempNum = gameData[i][j];
+                    boardSquares[i][j] = new JButton();
                     gamePanel.add(boardSquares[i][j]);
                 }
             }

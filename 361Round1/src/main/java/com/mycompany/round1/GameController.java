@@ -20,7 +20,7 @@ public class GameController {
     }
     
     public void showLeaderBoard(){
-        theLeaderBoardView = new LeaderBoardView(this);
+        //theLeaderBoardView = new LeaderBoardView(this);
         theLeaderBoardView.setVisible(true);
     }
 }
