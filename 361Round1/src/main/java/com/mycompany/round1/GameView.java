@@ -21,10 +21,14 @@ import javax.swing.SwingConstants;
 public final class GameView extends JFrame {
 
     private NavigationController nControl = null;
+    private GameController gameCtrl = null;
 
     //info panel components
     private JPanel infoPanel;
+    private JPanel scorePanel;
+    private JLabel scoreCounter;
     private JLabel scoreLabel;
+    private String score = "0";
     
     private SpinnerModel multipleModel;
     private JSpinner multipleOf_Spinner;
@@ -44,8 +48,9 @@ public final class GameView extends JFrame {
     //game board data
     private int[][] gameData;
 
-    public GameView(NavigationController n_control) {
+    public GameView(NavigationController n_control, GameController gameCtrl) {
         nControl = n_control;
+        this.gameCtrl = gameCtrl;
         multipleOf_Spinner = new JSpinner();
         createInfoPanel();
         gameData = createGameData();
@@ -76,16 +81,32 @@ public final class GameView extends JFrame {
         leaderboardButton.addActionListener((java.awt.event.ActionEvent evt) -> {
             leaderboardButtonActionPerformed(evt);
         });
+        scorePanel = new JPanel();
         
-        scoreLabel = new JLabel("Score:", SwingConstants.CENTER);
+        scoreLabel = new JLabel("Score: ", SwingConstants.CENTER);
+        scoreCounter = new JLabel(score);
+        scorePanel.add(scoreLabel);
+        scorePanel.add(scoreCounter);
         
         infoPanel.add(playButton);
         infoPanel.add(pauseButton);
         infoPanel.add(leaderboardButton);
-        infoPanel.add(scoreLabel);
+        infoPanel.add(scorePanel);
         infoPanel.add(gameLabel);
         infoPanel.add(multipleOf_Spinner);
         add(infoPanel, BorderLayout.NORTH);
+    }
+    
+    public void incScore(){
+        int scoreInt = Integer.parseInt(score) + 1;
+        score = Integer.toString(scoreInt);
+        createInfoPanel();
+    }
+    
+    public void decScore(){
+        int scoreInt = Integer.parseInt(score) - 1;
+        score = Integer.toString(scoreInt);
+        createInfoPanel();
     }
 
     //Creating the values for each button
@@ -111,7 +132,7 @@ public final class GameView extends JFrame {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 //Create buttons and add their values
-                    boardSquares[i][j] = new GameBox(Integer.toString(gameData[i][j]));
+                    boardSquares[i][j] = new GameBox(Integer.toString(gameData[i][j]), gameCtrl);
                     gamePanel.add(boardSquares[i][j]);
             }
         }

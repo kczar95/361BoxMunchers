@@ -8,6 +8,7 @@ package com.mycompany.round1;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -39,6 +40,7 @@ public class LeaderBoardView extends JFrame{
     public LeaderBoardView(NavigationController newNavCntl){
         
         theNavCntl = newNavCntl;
+        gameModel = new GameModel();
         createLabel();
         createScoreBoard();
         createBackButton();
@@ -56,10 +58,11 @@ public class LeaderBoardView extends JFrame{
     }
     
     private void createScoreBoard(){
-        scorePanel = new JPanel();             
-        Object rowData[][] = {{"Test Player 1", "Test Score 1"}, {"Test Player 2", "Test Score 2"}, 
-                             {"Test Player 3", "Test Score 3"}, 
-                             {"Test Player 4", "Test Score 4"}, {"Test Player 5", "Test Score 5"}};
+        scorePanel = new JPanel();
+        ArrayList<String> leaders = gameModel.getLeaders();
+        Object rowData[][] = {{leaders.get(8), leaders.get(9)}, {leaders.get(6), leaders.get(7)}, 
+                             {leaders.get(4), leaders.get(5)}, 
+                             {leaders.get(2), leaders.get(3)}, {leaders.get(0), leaders.get(1)}};
         Object columnNames[] = {"Player Name", "Score"};
         
         scoresTable = new JTable(rowData, columnNames);

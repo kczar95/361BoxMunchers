@@ -7,11 +7,12 @@ import javax.swing.JButton;
 
 public class GameBox extends JButton implements ActionListener
 {
+    GameController parentCntl;
     String buttonText;
-    GameBox(String str)
+    GameBox(String str, GameController theCtrl)
     {
         super();
-        
+        parentCntl = theCtrl;
         this.setText(str);
         this.addActionListener(this);
     }
@@ -20,6 +21,14 @@ public class GameBox extends JButton implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e) 
     {
-        this.setBackground(Color.cyan.darker());
+        if(parentCntl.correctBox(3, Integer.parseInt(this.getText()), 0)){
+            this.setBackground(Color.GREEN);
+            
+            //parentCntl.incScore();
+        } else {
+            this.setBackground(Color.RED);
+            //parentCntl.decScore();
+        }
+        
     }
 }

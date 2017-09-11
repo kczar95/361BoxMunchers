@@ -14,6 +14,10 @@ public class GameController {
     private GameModel theGameModel;
     private String name;
     private String score;
+    
+    public GameController (){
+       
+    }
 
     /*
     public GameController(){
@@ -48,7 +52,7 @@ public class GameController {
             theNavCntl.showLeaderBoard();
         }
     }
-
+    
     //gameMode is a 1,2 or 3; 1=MULTIPLES,2=FACTORS,3=PRIMES.
     //boxNumber is the value in the box.
     //gameValue is the value set to compare to the box.
@@ -77,12 +81,20 @@ public class GameController {
             case 2:
                 return false;
             default:
-                boolean prime = false;
-                for (int i = boxNumber - 1; i > 2; i--) {
-                    int primeCheck = boxNumber % i;
-                    prime = primeCheck == 0;
+//                boolean prime = false;
+//                for (int i = boxNumber - 1; i > 2; i--) {
+//                    int primeCheck = boxNumber % i;
+//                    prime = primeCheck == 0;
+//                }
+//                return prime;
+                //check if n is a multiple of 2
+                if (boxNumber%2==0) return false;
+                //if not, then just check the odds
+                for(int i=3;i*i<=boxNumber;i+=2) {
+                    if(boxNumber%i==0)
+                        return false;
                 }
-                return prime;
+                return true;
         }
     }
 }

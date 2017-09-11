@@ -14,11 +14,21 @@ public class NavigationController {
     private GameView theGameView;
     private NavigationView theNavigationView;
     private LeaderBoardView theLeaderBoardView;
+    private GameController gameCtrl;
     
-    public NavigationController(){                  
-        theGameView = new GameView(this);
+    public NavigationController(){         
+        gameCtrl = new GameController();
+        theGameView = new GameView(this, gameCtrl);
         theGameView.setLocationRelativeTo(null);
         theGameView.setVisible(true);
+    }
+    
+    public void incScore () {
+        theGameView.incScore();
+    }
+    
+    public void decScore () {
+        theGameView.decScore();
     }
     
     public void showLeaderBoard(){
