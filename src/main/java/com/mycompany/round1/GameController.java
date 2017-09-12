@@ -24,29 +24,29 @@ public class GameController {
         theGameView.setVisible(true);
     }
 
-    public void incScore() {
-        theGameView.incScore();
+    public void modifyScore(GameBox theBox) {
+        if (theBox.isCorrect() && !theBox.isSelected()) {
+          theGameView.incScore();
+        } else if (!theBox.isSelected()) {
+            theGameView.decScore();
+        }
     }
 
-    public void decScore() {
-        theGameView.decScore();
-    }
-    
-    public void showLeaderBoard(){
+    public void showLeaderBoard() {
         theLeaderBoardView = new LeaderBoardView(this);
         theLeaderBoardView.setLocationRelativeTo(null);
         theLeaderBoardView.setVisible(true);
     }
-    
-    public void hideLeaderBoard(){      
+
+    public void hideLeaderBoard() {
         theLeaderBoardView.setVisible(false);
         theLeaderBoardView.dispose();
-     }
-    
-    public boolean checkLeaders(){
+    }
+
+    public boolean checkLeaders() {
         return false;
     }
-    
+
     //this method will be run when the PLay button is clicked on
     public void play() {
 
