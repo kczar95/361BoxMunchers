@@ -12,7 +12,7 @@ public class GameBox extends JButton implements ActionListener {
     public GameBox() {
         super();
         int value = (int) (Math.random() * 200);
-        this.setText(value+"");
+        this.setText(value + "");
         this.addActionListener(this);
     }
 
@@ -52,25 +52,21 @@ public class GameBox extends JButton implements ActionListener {
     }
 
     private boolean isPrime(int boxNumber) {
-        switch (boxNumber) {
-            case 0:
-                return false;
-            case 1:
-                return true;
-            case 2:
-                return false;
-            default:
-                if (boxNumber % 2 == 0) {
-                    return false;
-                }
-
-                for (int i = 3; i * i <= boxNumber; i += 2) {
-                    if (boxNumber % i == 0) {
-                        return false;
-                    }
-                }
-                return true;
+        if (boxNumber == 1) {
+            return true;
         }
+
+        if (boxNumber == 0 || boxNumber == 2 || boxNumber % 2 == 0) {
+            return false;
+        }
+
+        for (int i = 3; i * i <= boxNumber; i += 2) {
+            if (boxNumber % i == 0) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 }
