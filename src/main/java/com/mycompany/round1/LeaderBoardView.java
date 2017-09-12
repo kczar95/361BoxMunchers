@@ -26,14 +26,9 @@ public class LeaderBoardView extends JFrame {
     private JPanel scorePanel;
     private JPanel backPanel;
     private JTable scoresTable;
-    private Object rowData[][];
-    private Object columnNames[];
-    private JTextArea theScoresField;
     private JLabel leaderBoardLabel;
-    private JLabel nameLabel;
-    private JLabel scoreLabel;
     private JButton backButton;
-    private GameModel gameModel;
+    private final GameModel gameModel;
     private final GameController theGameCntl;
 
     public LeaderBoardView(GameController theGameCntl) {

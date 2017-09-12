@@ -19,9 +19,9 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 
-public class GameView extends JFrame {
+public final class GameView extends JFrame {
 
-    private GameController gameCtrl;
+    private final GameController gameCtrl;
     //info panel components
     private JPanel infoPanel;
     private JPanel scorePanel;
@@ -43,15 +43,11 @@ public class GameView extends JFrame {
     private JPanel gamePanel;
     GridLayout boardGrid = new GridLayout(9, 9);
 
-    //game board data
-    private int[][] gameData;
-
     public GameView(GameController gameCtrl) {
         this.gameCtrl = gameCtrl;
         multipleOf_Spinner = new JSpinner();
         createInfoPanel();
-        gameData = createGameData();
-        createGameBoardPanel(gameData);
+        createGameBoardPanel(9, 9);
         this.setVisible(true);
         setBounds(0, 0, 750, 550);
         setResizable(false);
@@ -60,12 +56,8 @@ public class GameView extends JFrame {
 
     public void createInfoPanel() {
         infoPanel = new JPanel();
-
-        GridLayout infoGrid = new GridLayout(2, 3, 0, 50);
-        infoPanel.setLayout(infoGrid);
-
+        infoPanel.setLayout(new GridLayout(2, 3, 0, 50));
         playButton = new JButton("Play");
-
         pauseButton = new JButton("Pause");
         gameLabel = new JLabel("Multiple Of:", SwingConstants.CENTER);
 
@@ -122,30 +114,17 @@ public class GameView extends JFrame {
         this.getContentPane().repaint();
     }
 
-    //Creating the values for each button
-    public int[][] createGameData() {
-        int[][] tempData = new int[9][9];
-        for (int i = 0; i < tempData.length; i++) {
-            for (int j = 0; j < tempData.length; j++) {
-                if (tempData[i][j] == 0) {
-                    tempData[i][j] = (int) (Math.random() * 200);
-                }
-            }
-        }
-        return tempData;
-    }
-
-    public void createGameBoardPanel(int[][] gameData) {
+    public void createGameBoardPanel(int rows, int cols) {
         gamePanel = new JPanel();
         add(gamePanel);
 
-        gamePanel.setLayout(new GridLayout(9, 9));
-        JButton[][] boardSquares = new JButton[9][9];
+        gamePanel.setLayout(new GridLayout(rows, cols));
+        JButton[][] boardSquares = new JButton[rows][cols];
 
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
                 //Create buttons and add their values
-                GameBox newGameBox = new GameBox(Integer.toString(gameData[i][j]));
+                GameBox newGameBox = new GameBox();
 
                 newGameBox.addActionListener(new GameBoxSelectedEvent(newGameBox));
 
@@ -159,10 +138,6 @@ public class GameView extends JFrame {
         GameView.this.gameCtrl.showLeaderBoard();
     }
 
-    private GameView thisGameView() {
-        return this;
-    }
-
     class GameBoxSelectedEvent implements ActionListener {
 
         private final GameBox theBox;
@@ -173,11 +148,7 @@ public class GameView extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (theBox.isCorrect() && !theBox.isSelected()) {
-                gameCtrl.incScore();
-            } else if (!theBox.isSelected()) {
-                gameCtrl.decScore();
-            }
+            gameCtrl.modifyScore(theBox);
         }
     }
 }
