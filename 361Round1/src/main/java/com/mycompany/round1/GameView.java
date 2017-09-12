@@ -91,22 +91,39 @@ public final class GameView extends JFrame {
         infoPanel.add(playButton);
         infoPanel.add(pauseButton);
         infoPanel.add(leaderboardButton);
-        infoPanel.add(scorePanel);
         infoPanel.add(gameLabel);
         infoPanel.add(multipleOf_Spinner);
+        infoPanel.add(scorePanel);
         add(infoPanel, BorderLayout.NORTH);
     }
     
     public void incScore(){
         int scoreInt = Integer.parseInt(score) + 1;
         score = Integer.toString(scoreInt);
-        createInfoPanel();
+        updateScore();
+        if(Integer.parseInt(score) == 10){
+            boolean placed = nControl.checkLeaders();
+            nControl.showLeaderBoard();
+            
+        }
     }
     
     public void decScore(){
         int scoreInt = Integer.parseInt(score) - 1;
         score = Integer.toString(scoreInt);
-        createInfoPanel();
+        updateScore();
+    }
+    
+    public void updateScore() {
+        this.getContentPane().remove(infoPanel);
+        infoPanel.remove(scorePanel);
+        scorePanel.remove(scoreCounter);
+        scoreCounter.setText(score);
+        scorePanel.add(scoreCounter);
+        infoPanel.add(scorePanel);
+        this.getContentPane().add(infoPanel, BorderLayout.NORTH);
+        this.getContentPane().revalidate();
+        this.getContentPane().repaint();
     }
 
     //Creating the values for each button

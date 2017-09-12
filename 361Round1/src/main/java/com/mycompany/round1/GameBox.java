@@ -8,6 +8,7 @@ import javax.swing.JButton;
 public class GameBox extends JButton implements ActionListener
 {
     GameController parentCntl;
+    boolean selected = false;
     String buttonText;
     GameBox(String str, GameController theCtrl)
     {
@@ -21,13 +22,14 @@ public class GameBox extends JButton implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e) 
     {
-        if(parentCntl.correctBox(3, Integer.parseInt(this.getText()), 0)){
+        if(parentCntl.correctBox(3, Integer.parseInt(this.getText()), 0) && !selected){
             this.setBackground(Color.GREEN);
-            
-            //parentCntl.incScore();
-        } else {
+            parentCntl.incScore();
+            selected = true;
+        } else if (!selected){
             this.setBackground(Color.RED);
-            //parentCntl.decScore();
+            parentCntl.decScore();
+            selected = true;
         }
         
     }

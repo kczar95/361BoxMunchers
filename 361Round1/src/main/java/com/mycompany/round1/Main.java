@@ -5,8 +5,8 @@ public class Main
 {
     public static void main(String[] args)
     {
-        NavigationController cntl = new NavigationController();
-        //GameController cntl2 = new GameController();
+        //NavigationController cntl = new NavigationController(new GameController());
+        GameController cntl2 = new GameController();
         //GameModel gasd = new GameModel();
       
         try 

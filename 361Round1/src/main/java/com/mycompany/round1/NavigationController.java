@@ -16,11 +16,16 @@ public class NavigationController {
     private LeaderBoardView theLeaderBoardView;
     private GameController gameCtrl;
     
-    public NavigationController(){         
-        gameCtrl = new GameController();
+    public NavigationController(GameController theCntl){         
+        gameCtrl = theCntl;
         theGameView = new GameView(this, gameCtrl);
         theGameView.setLocationRelativeTo(null);
         theGameView.setVisible(true);
+    }
+    
+    //
+    public boolean checkLeaders(){
+        return false;
     }
     
     public void incScore () {

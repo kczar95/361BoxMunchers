@@ -16,7 +16,7 @@ public class GameController {
     private String score;
     
     public GameController (){
-       
+       theNavCntl = new NavigationController(this);
     }
 
     /*
@@ -25,6 +25,14 @@ public class GameController {
         theGameView.setLocationRelativeTo(null);
         theGameView.setVisible(true);
     }*/
+    public void incScore(){
+        theNavCntl.incScore();
+    }
+    
+    public void decScore() {
+        theNavCntl.decScore();
+    }
+    
     public void showLeaderBoard() {
         //theLeaderBoardView = new LeaderBoardView(this);
         theLeaderBoardView.setVisible(true);
@@ -37,7 +45,7 @@ public class GameController {
     }
 
     public void getNewLeader(int theScore) {
-        theNavCntl = new NavigationController();
+        theNavCntl = new NavigationController(this);
         theGameModel = new GameModel();
         name = "";
         boolean placed = theGameModel.checkScore(theScore);
