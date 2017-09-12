@@ -9,6 +9,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,25 +19,24 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 
-public final class GameView extends JFrame {
+public class GameView extends JFrame {
 
     private GameController gameCtrl;
-
     //info panel components
     private JPanel infoPanel;
     private JPanel scorePanel;
     private JLabel scoreCounter;
     private JLabel scoreLabel;
     private String score = "0";
-    
+
     private SpinnerModel multipleModel;
     private JSpinner multipleOf_Spinner;
-    
+
     private JButton playButton;
     private JButton pauseButton;
     private JLabel gameLabel;
     private JButton leaderboardButton;
-    
+
     GridLayout infoGrid = new GridLayout(2, 3);
 
     //game board components
@@ -46,8 +46,7 @@ public final class GameView extends JFrame {
     //game board data
     private int[][] gameData;
 
-    public GameView(GameController gameCtrl) 
-    {
+    public GameView(GameController gameCtrl) {
         this.gameCtrl = gameCtrl;
         multipleOf_Spinner = new JSpinner();
         createInfoPanel();
@@ -61,31 +60,31 @@ public final class GameView extends JFrame {
 
     public void createInfoPanel() {
         infoPanel = new JPanel();
-        
+
         GridLayout infoGrid = new GridLayout(2, 3, 0, 50);
         infoPanel.setLayout(infoGrid);
-        
+
         playButton = new JButton("Play");
-        
+
         pauseButton = new JButton("Pause");
         gameLabel = new JLabel("Multiple Of:", SwingConstants.CENTER);
 
         //Creating a spinner model: starts at 3, ends at 17, increments by 2
         multipleModel = new SpinnerNumberModel(3, 3, 17, 2);
         multipleOf_Spinner = new JSpinner(multipleModel);
-        
-        
+
         leaderboardButton = new JButton("Leaderboard");
         leaderboardButton.addActionListener((java.awt.event.ActionEvent evt) -> {
             leaderboardButtonActionPerformed(evt);
         });
+
         scorePanel = new JPanel();
-        
+
         scoreLabel = new JLabel("Score: ", SwingConstants.CENTER);
         scoreCounter = new JLabel(score);
         scorePanel.add(scoreLabel);
         scorePanel.add(scoreCounter);
-        
+
         infoPanel.add(playButton);
         infoPanel.add(pauseButton);
         infoPanel.add(leaderboardButton);
@@ -94,24 +93,23 @@ public final class GameView extends JFrame {
         infoPanel.add(scorePanel);
         add(infoPanel, BorderLayout.NORTH);
     }
-    
-    public void incScore(){
+
+    public void incScore() {
         int scoreInt = Integer.parseInt(score) + 1;
         score = Integer.toString(scoreInt);
         updateScore();
-        if(Integer.parseInt(score) == 10){
+        if (Integer.parseInt(score) == 10) {
             boolean placed = gameCtrl.checkLeaders();
             gameCtrl.showLeaderBoard();
-            
         }
     }
-    
-    public void decScore(){
+
+    public void decScore() {
         int scoreInt = Integer.parseInt(score) - 1;
         score = Integer.toString(scoreInt);
         updateScore();
     }
-    
+
     public void updateScore() {
         this.getContentPane().remove(infoPanel);
         infoPanel.remove(scorePanel);
@@ -143,17 +141,43 @@ public final class GameView extends JFrame {
 
         gamePanel.setLayout(new GridLayout(9, 9));
         JButton[][] boardSquares = new JButton[9][9];
-        
+
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 //Create buttons and add their values
-                    boardSquares[i][j] = new GameBox(Integer.toString(gameData[i][j]), gameCtrl);
-                    gamePanel.add(boardSquares[i][j]);
+                GameBox newGameBox = new GameBox(Integer.toString(gameData[i][j]));
+
+                newGameBox.addActionListener(new GameBoxSelectedEvent(newGameBox));
+
+                boardSquares[i][j] = newGameBox;
+                gamePanel.add(boardSquares[i][j]);
             }
         }
     }
 
     private void leaderboardButtonActionPerformed(ActionEvent evt) {
         GameView.this.gameCtrl.showLeaderBoard();
+    }
+
+    private GameView thisGameView() {
+        return this;
+    }
+
+    class GameBoxSelectedEvent implements ActionListener {
+
+        private final GameBox theBox;
+
+        public GameBoxSelectedEvent(GameBox theBox) {
+            this.theBox = theBox;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (theBox.isCorrect() && !theBox.isSelected()) {
+                gameCtrl.incScore();
+            } else if (!theBox.isSelected()) {
+                gameCtrl.decScore();
+            }
+        }
     }
 }
