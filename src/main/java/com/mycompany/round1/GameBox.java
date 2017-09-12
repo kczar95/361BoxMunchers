@@ -8,15 +8,14 @@ import javax.swing.JButton;
 public class GameBox extends JButton implements ActionListener {
 
     boolean selected = false;
-    String buttonText;
 
-    GameBox(String str) {
+    public GameBox() {
         super();
-        this.setText(str);
+        int value = (int) (Math.random() * 200);
+        this.setText(value+"");
         this.addActionListener(this);
     }
 
-    //When a button is clicked on
     @Override
     public void actionPerformed(ActionEvent e) {
         if (isCorrect() && !selected) {
@@ -32,7 +31,7 @@ public class GameBox extends JButton implements ActionListener {
         // TODO: Change these:
         int gameValue = 0;
         int gameMode = 3;
-        
+
         int answerCheck;
         int boxNumber = getBoxNumber();
 
