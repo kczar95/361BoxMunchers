@@ -21,11 +21,10 @@ import java.util.Arrays;
 public class GameModel {
 
     private String connectionURL = "https://boxmunchers-6c015.firebaseio.com/leaderboard.json";
-    private ArrayList<String> currLeaders;
+    private ArrayList<Leader> currLeaders;
 
     public GameModel() {
         read();
-        System.out.println(currLeaders.toString());
         submitScore(new ArrayList<String>(Arrays.asList("Daniel", "120")));
     }
 
@@ -33,15 +32,15 @@ public class GameModel {
         if (currLeaders.size() < 10) {
             return true;
         }
-        
+
         //else, check if it is greater then any of them, if so remove that one and add this one
         int currSmallestLocation = 1;
         int currSmallest = 9999;
-        for (int i = 1; i < currLeaders.size(); i += 2) {
+        for (int i = 1; i < currLeaders.size(); i++) {
             //System.out.println(currLeaders.get(i));
-            if (Integer.parseInt(currLeaders.get(i)) < currSmallest) {
+            if (currLeaders.get(i).getScore() < currSmallest) {
                 currSmallestLocation = i;
-                currSmallest = Integer.parseInt(currLeaders.get(i));
+                currSmallest = currLeaders.get(i).getScore();
                 System.out.println(currSmallest);
                 System.out.println(currSmallestLocation);
             }
@@ -57,13 +56,11 @@ public class GameModel {
     //this will take in the curr users score / name and return a boolean if they are on the leaderboard
 
     public void submitScore(ArrayList<String> currNameScore) {
-        currLeaders.add(currNameScore.get(0));
-        currLeaders.add(currNameScore.get(1));
-
-        write(currLeaders);
+        currLeaders.add(new Leader(currNameScore.get(0), Integer.parseInt(currNameScore.get(1))));
+        //write(currLeaders);
     }
 
-    public ArrayList<String> getLeaders() {
+    public ArrayList<Leader> getLeaders() {
         return currLeaders;
     }
 

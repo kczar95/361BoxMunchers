@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -24,7 +25,6 @@ public class LeaderBoardView extends JFrame {
     private JPanel titlePanel;
     private JPanel scorePanel;
     private JPanel backPanel;
-    private JTable scoresTable;
     private JLabel leaderBoardLabel;
     private JButton backButton;
     private final GameModel gameModel;
@@ -51,15 +51,18 @@ public class LeaderBoardView extends JFrame {
 
     private void createScoreBoard() {
         scorePanel = new JPanel();
-        ArrayList<String> leaders = gameModel.getLeaders();
-        Object rowData[][] = {{leaders.get(8), leaders.get(9)}, {leaders.get(6), leaders.get(7)},
-        {leaders.get(4), leaders.get(5)},
-        {leaders.get(2), leaders.get(3)}, {leaders.get(0), leaders.get(1)}};
+        JTable theTable = new JTable();
+        
         Object columnNames[] = {"Player Name", "Score"};
-
-        scoresTable = new JTable(rowData, columnNames);
-
-        scorePanel.add(scoresTable);
+        DefaultTableModel tableModel = (DefaultTableModel) theTable.getModel();
+        tableModel.setColumnIdentifiers(columnNames);
+        
+        for(Leader leader : gameModel.getLeaders()){
+            Object row[] = {leader.getName(), leader.getScore()};
+            tableModel.addRow(row);
+        }
+        
+        scorePanel.add(theTable);
         add(scorePanel, BorderLayout.CENTER);
     }
 
