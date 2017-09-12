@@ -7,7 +7,6 @@ package com.mycompany.round1;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -43,11 +42,11 @@ public final class GameView extends JFrame {
     private JPanel gamePanel;
     GridLayout boardGrid = new GridLayout(9, 9);
 
-    public GameView(GameController gameCtrl) {
+    public GameView(GameController gameCtrl, int rows, int cols) {
         this.gameCtrl = gameCtrl;
         multipleOf_Spinner = new JSpinner();
         createInfoPanel();
-        createGameBoardPanel(9, 9);
+        createGameBoardPanel(rows, cols);
         this.setVisible(true);
         setBounds(0, 0, 750, 550);
         setResizable(false);
@@ -116,22 +115,15 @@ public final class GameView extends JFrame {
 
     public void createGameBoardPanel(int rows, int cols) {
         gamePanel = new JPanel();
-        add(gamePanel);
-
         gamePanel.setLayout(new GridLayout(rows, cols));
-        JButton[][] boardSquares = new JButton[rows][cols];
 
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                //Create buttons and add their values
-                GameBox newGameBox = new GameBox();
-
-                newGameBox.addActionListener(new GameBoxSelectedEvent(newGameBox));
-
-                boardSquares[i][j] = newGameBox;
-                gamePanel.add(boardSquares[i][j]);
-            }
+        for (int i = 0; i < rows * cols; i++) {
+            GameBox newGameBox = new GameBox();
+            newGameBox.addActionListener(new GameBoxSelectedEvent(newGameBox));
+            gamePanel.add(newGameBox);
         }
+        
+        add(gamePanel);
     }
 
     private void leaderboardButtonActionPerformed(ActionEvent evt) {

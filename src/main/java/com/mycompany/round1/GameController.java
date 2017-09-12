@@ -16,7 +16,7 @@ public class GameController {
     private String score;
 
     public GameController() {
-        theGameView = new GameView(this);
+        theGameView = new GameView(this, 9, 9);
     }
 
     public void showGameView() {
@@ -26,7 +26,7 @@ public class GameController {
 
     public void modifyScore(GameBox theBox) {
         if (theBox.isCorrect() && !theBox.isSelected()) {
-          theGameView.incScore();
+            theGameView.incScore();
         } else if (!theBox.isSelected()) {
             theGameView.decScore();
         }
