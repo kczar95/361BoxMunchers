@@ -35,11 +35,11 @@ public class LeaderBoardView extends JFrame{
     private JLabel scoreLabel;
     private JButton backButton;
     private GameModel gameModel;
-    private NavigationController theNavCntl;
+    private GameController theGameCntl;
     
-    public LeaderBoardView(NavigationController newNavCntl){
+    public LeaderBoardView(GameController newGameCntl){
         
-        theNavCntl = newNavCntl;
+        theGameCntl = newGameCntl;
         gameModel = new GameModel();
         createLabel();
         createScoreBoard();
@@ -84,7 +84,7 @@ public class LeaderBoardView extends JFrame{
     }
     
     private void backButtonActionPerformed(ActionEvent evt){
-        LeaderBoardView.this.theNavCntl.hideLeaderBoard();
+        LeaderBoardView.this.theGameCntl.hideLeaderBoard();
         //this.setVisible(false);
     }
     

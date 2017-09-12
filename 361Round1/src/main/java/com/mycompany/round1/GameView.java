@@ -20,8 +20,7 @@ import javax.swing.SwingConstants;
 
 public final class GameView extends JFrame {
 
-    private NavigationController nControl = null;
-    private GameController gameCtrl = null;
+    private GameController gameCtrl;
 
     //info panel components
     private JPanel infoPanel;
@@ -42,14 +41,13 @@ public final class GameView extends JFrame {
 
     //game board components
     private JPanel gamePanel;
-    private JButton boardPiece;
     GridLayout boardGrid = new GridLayout(9, 9);
 
     //game board data
     private int[][] gameData;
 
-    public GameView(NavigationController n_control, GameController gameCtrl) {
-        nControl = n_control;
+    public GameView(GameController gameCtrl) 
+    {
         this.gameCtrl = gameCtrl;
         multipleOf_Spinner = new JSpinner();
         createInfoPanel();
@@ -102,8 +100,8 @@ public final class GameView extends JFrame {
         score = Integer.toString(scoreInt);
         updateScore();
         if(Integer.parseInt(score) == 10){
-            boolean placed = nControl.checkLeaders();
-            nControl.showLeaderBoard();
+            boolean placed = gameCtrl.checkLeaders();
+            gameCtrl.showLeaderBoard();
             
         }
     }
@@ -156,6 +154,6 @@ public final class GameView extends JFrame {
     }
 
     private void leaderboardButtonActionPerformed(ActionEvent evt) {
-        GameView.this.nControl.showLeaderBoard();
+        GameView.this.gameCtrl.showLeaderBoard();
     }
 }

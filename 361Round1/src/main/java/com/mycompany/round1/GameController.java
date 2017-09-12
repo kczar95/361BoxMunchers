@@ -10,13 +10,13 @@ public class GameController {
 
     //private GameView theGameView;
     private LeaderBoardView theLeaderBoardView;
-    private NavigationController theNavCntl;
+    private GameView theGameView;
     private GameModel theGameModel;
     private String name;
     private String score;
     
     public GameController (){
-       theNavCntl = new NavigationController(this);
+       theGameView = new GameView(this);
     }
 
     /*
@@ -26,16 +26,26 @@ public class GameController {
         theGameView.setVisible(true);
     }*/
     public void incScore(){
-        theNavCntl.incScore();
+        theGameView.incScore();
     }
     
     public void decScore() {
-        theNavCntl.decScore();
+        theGameView.decScore();
     }
     
-    public void showLeaderBoard() {
-        //theLeaderBoardView = new LeaderBoardView(this);
+    public void showLeaderBoard(){
+        theLeaderBoardView = new LeaderBoardView(this);
+        theLeaderBoardView.setLocationRelativeTo(null);
         theLeaderBoardView.setVisible(true);
+    }
+    
+    public void hideLeaderBoard(){      
+        theLeaderBoardView.setVisible(false);
+        theLeaderBoardView.dispose();
+     }
+    
+    public boolean checkLeaders(){
+        return false;
     }
     
     //this method will be run when the PLay button is clicked on
@@ -45,7 +55,6 @@ public class GameController {
     }
 
     public void getNewLeader(int theScore) {
-        theNavCntl = new NavigationController(this);
         theGameModel = new GameModel();
         name = "";
         boolean placed = theGameModel.checkScore(theScore);
@@ -55,9 +64,9 @@ public class GameController {
         theScoreAndPlayer.add(score);
         if (placed) {
             theGameModel.submitScore(theScoreAndPlayer);
-            theNavCntl.showLeaderBoard();
+            showLeaderBoard();
         } else {
-            theNavCntl.showLeaderBoard();
+            showLeaderBoard();
         }
     }
     
