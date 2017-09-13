@@ -10,15 +10,15 @@ public class GameBox extends JButton implements ActionListener {
     boolean selected = false;
     GameView theView;
 
-    public GameBox(GameView gv) {
+    public GameBox(String str, GameView gv) {
+        super();
         theView = gv;
-        int value = (int) (Math.random() * 200);
-        this.setText(value + "");
+        this.setText(str);
         this.addActionListener(this);
         this.setOpaque(true);
         this.setBackground(null);
 //        this.setBorderPainted(false);
-        this.setFocusable(false);
+        //this.setFocusable(false);
         
     }
 

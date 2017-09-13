@@ -38,8 +38,21 @@ public class GameController {
         }catch (Exception e){
             
         }
-        theGameView.createGameBoardPanel();
+        int [][] gameData = createGameData();
+        theGameView.createGameBoardPanel(gameData);
         play();
+    }
+    
+    private int[][] createGameData() {
+        int[][] tempData = new int [9][9];
+        for(int i = 0; i < tempData.length; i++){
+            for(int j = 0; j < tempData.length; j++){
+                if(tempData[i][j] == 0){
+                    tempData[i][j] = (int) (Math.random() * 200);
+                }
+            }
+        }
+        return tempData;
     }
     
     private void leaderboardButtonActionPerformed(ActionEvent evt) {

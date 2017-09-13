@@ -11,6 +11,9 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import javax.swing.BoxLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -112,7 +115,7 @@ public final class GameView extends JFrame {
         this.getContentPane().revalidate();
         this.getContentPane().repaint();
     }
-
+/*
     public void createGameBoardPanel() {
         gamePanel = new JPanel();
         gamePanel.setLayout(new GridLayout(9, 9));
@@ -123,5 +126,56 @@ public final class GameView extends JFrame {
         }
         add(gamePanel);
     }
+ */  
+    public void createGameBoardPanel(int[][] gameData) {
+        gamePanel = new JPanel();
+        add(gamePanel);
+
+        gamePanel.setLayout(new GridLayout(9, 9));
+        JButton[][] boardSquares = new JButton[9][9];
+        
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                //Create buttons and add their values
+                    boardSquares[i][j] = new GameBox(Integer.toString(gameData[i][j]), this);                  
+                    final int row = i;
+                    final int col = j;
+                    boardSquares[i][j].addKeyListener(space);
+                    boardSquares[i][j].addKeyListener(new KeyAdapter() {                       
+                        @Override
+                        public void keyPressed(KeyEvent e) {                       
+                            switch (e.getKeyCode()){
+                            case KeyEvent.VK_RIGHT:
+                                if (col < boardSquares[row].length - 1)
+                                    boardSquares[row][col + 1].requestFocus();
+                                break;
+                            case KeyEvent.VK_DOWN:
+                                if (row < boardSquares.length - 1)
+                                    boardSquares[row + 1][col].requestFocus();
+                                break; 
+                            case KeyEvent.VK_UP:
+                                if (row > 0)
+                                    boardSquares[row - 1][col].requestFocus();
+                                break;                                                         
+                            case KeyEvent.VK_LEFT:
+                                if (col > 0)
+                                    boardSquares[row][col - 1].requestFocus();
+                                break;                                                                                    
+                            }
+                        }
+                    });
+                    gamePanel.add(boardSquares[i][j]);
+            }
+        }
+    }
+    
+    private KeyListener space = new KeyAdapter(){
+        @Override
+        public void keyTyped(KeyEvent e){
+            if(e.getKeyChar() == KeyEvent.VK_SPACE){
+                ((JButton) e.getComponent()).doClick();
+            }
+        }
+    };
 
 }
