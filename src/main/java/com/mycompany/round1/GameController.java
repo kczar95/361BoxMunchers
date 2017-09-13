@@ -6,26 +6,44 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.Timer;
 
-/**
- *
- * @author lap5508
- */
 public class GameController {
 
-    //private GameView theGameView;
     private final GameView theGameView;
     private LeaderBoardView theLeaderBoardView;
     private GameModel theGameModel;
     private String name;
-    private String score;
+    private String score = "0";
     private Timer gameTime;
-    private int i = 61;
-    private int delay = 1000;
-    private int gEnd = 0;
+    private int i = 0;
+    private final int delay = 1000;
+    private final int gEnd = 0;
     private boolean playing = false;
+    
+    Color defaultColor;
 
     public GameController() {
-        theGameView = new GameView(this, 9, 9);
+        theGameView = new GameView(this);
+        theGameView.playButton.addActionListener((java.awt.event.ActionEvent evnt) -> 
+                {
+                  playButtonActionPerformed(evnt);  
+                });
+        theGameView.leaderboardButton.addActionListener((java.awt.event.ActionEvent evt) -> {
+            leaderboardButtonActionPerformed(evt);
+        });
+    }
+    
+    private void playButtonActionPerformed(ActionEvent evnt){
+        try{
+            theGameView.removeCurrentBoard();
+        }catch (Exception e){
+            
+        }
+        theGameView.createGameBoardPanel();
+        play();
+    }
+    
+    private void leaderboardButtonActionPerformed(ActionEvent evt) {
+        showLeaderBoard();
     }
     
     public boolean isPlaying() {
@@ -35,14 +53,6 @@ public class GameController {
     public void showGameView() {
         theGameView.setLocationRelativeTo(null);
         theGameView.setVisible(true);
-    }
-
-    public void modifyScore(GameBox theBox) {
-        if (theBox.isCorrect() && !theBox.wasSelected()) {
-            theGameView.incScore();
-        } else if (!theBox.wasSelected()) {
-            theGameView.decScore();
-        }
     }
 
     public void showLeaderBoard() {
@@ -61,34 +71,47 @@ public class GameController {
     }
     
     public void gameOver() {
-        theGameView.setGameOver();
+        theGameView.scoreCounter.setText("GAME OVER");
+        theGameView.scoreCounter.setForeground(Color.RED);
+        theGameView.playButton.setEnabled(true);
+        theGameView.multipleOf.setEnabled(true);
+        theGameView.optionsBox.setEnabled(true);
     }
 
-    //this method will be run when the PLay button is clicked on
+    //this method will be run when the Play button is clicked on
     public void play() {
+        i = 18; //the length of the game, in seconds
         playing = true;
-           startGameTimer();
+        
+        defaultColor = theGameView.playButton.getBackground();
+        theGameView.timeRem.setBackground(defaultColor);
+        
+        score = "0";
+        theGameView.scoreCounter.setText(score);
+        theGameView.scoreCounter.setForeground(Color.blue);
+        theGameView.playButton.setEnabled(false);
+        theGameView.multipleOf.setEnabled(false);
+        theGameView.optionsBox.setEnabled(false);
+        startGameTimer();
     }
     
     //this method will run the timer of the game
     public void startGameTimer(){
         ActionListener secondCounter = new ActionListener(){
             public void actionPerformed(ActionEvent evt) {
-               if (i > gEnd)
-               {
-                i = i - 1;
-                theGameView.timeRem.setText(Integer.toString(i));
-                if(i < 11){
+               if (i > gEnd){
+                    i = i - 1;
+                    theGameView.timeRem.setText(Integer.toString(i));
+                    if(i < 16){
                     theGameView.timeRem.setBackground(Color.YELLOW);
                 }
                } else {
                    gameTime.stop();
                    playing = false;
-                   gameOver();
+                   gameOver();   
                }
             }
-        };
-            
+        };       
         gameTime = new Timer(delay, secondCounter);
         gameTime.start();
     }
@@ -107,5 +130,25 @@ public class GameController {
         } else {
             showLeaderBoard();
         }
+    }
+    
+    public void incScore() {
+        int scoreInt = Integer.parseInt(score) + 1;
+        score = Integer.toString(scoreInt);
+        updateScore();
+        if (Integer.parseInt(score) == 10) {
+            boolean placed = checkLeaders();
+            showLeaderBoard();
+        }
+    }
+
+    public void decScore() {
+        int scoreInt = Integer.parseInt(score) - 1;
+        score = Integer.toString(scoreInt);
+        updateScore();
+    }
+
+    public void updateScore() {
+        theGameView.scoreCounter.setText(score);
     }
 }

@@ -8,9 +8,10 @@ import javax.swing.JButton;
 public class GameBox extends JButton implements ActionListener {
 
     boolean selected = false;
+    GameView theView;
 
-    public GameBox() {
-        super();
+    public GameBox(GameView gv) {
+        theView = gv;
         int value = (int) (Math.random() * 200);
         this.setText(value + "");
         this.addActionListener(this);
@@ -22,40 +23,45 @@ public class GameBox extends JButton implements ActionListener {
     }
 
     @Override
+    //Everything that happens when a gameboard button is pressed
     public void actionPerformed(ActionEvent e) {
-        
-        if (isCorrect() && !selected) {
+        if (isCorrect(theView.multipleOf.getText(), Integer.parseInt(this.getText())) && !selected) {
             this.setBackground(Color.GREEN);
             this.setForeground(Color.GREEN);
             selected = true;
+            theView.gameCtrl.incScore();
         } else if (!selected) {
             this.setBackground(Color.RED);
             selected = true;
+            theView.gameCtrl.decScore();
         }
     }
-
-    public boolean isCorrect() {
+    
+    //check if the selected value 
+    //is correct based on the
+    //game mode
+    public boolean isCorrect(String mo, int bn) {
         // TODO: Change these:
-        int gameValue = 0;
-        int gameMode = 3;
+        int multipleOfValue = 0;
+        int gameMode = theView.optionsBox.getSelectedIndex();
 
         int answerCheck;
-        int boxNumber = getBoxNumber();
+        int boxNumber = bn;
 
         switch (gameMode) {
+            case 0:
+                return isPrime(boxNumber);
             case 1:
-                answerCheck = boxNumber % gameValue;
+                multipleOfValue = Integer.parseInt(mo);
+                answerCheck = boxNumber % multipleOfValue;
                 return answerCheck == 0;
             case 2:
-                answerCheck = gameValue % boxNumber;
+                multipleOfValue = Integer.parseInt(mo);
+                answerCheck = multipleOfValue % boxNumber;
                 return answerCheck == 0;
             default:
-                return isPrime(boxNumber);
+                return true;
         }
-    }
-
-    private int getBoxNumber() {
-        return Integer.parseInt(this.getText());
     }
     
     public boolean wasSelected() {
@@ -76,7 +82,6 @@ public class GameBox extends JButton implements ActionListener {
                 return false;
             }
         }
-
         return true;
     }
 

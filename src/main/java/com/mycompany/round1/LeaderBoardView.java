@@ -56,10 +56,10 @@ public class LeaderBoardView extends JFrame {
         DefaultTableModel tableModel = (DefaultTableModel) theTable.getModel();
         tableModel.setColumnIdentifiers(columnNames);
         
-        for(Leader leader : gameModel.getLeaders()){
-            Object row[] = {leader.getName(), leader.getScore()};
-            tableModel.addRow(row);
-        }
+//        for(Leader leader : gameModel.getLeaders()){
+//            Object row[] = {leader.getName(), leader.getScore()};
+//            tableModel.addRow(row);
+//        }
         
         scorePanel.add(theTable);
         add(scorePanel, BorderLayout.CENTER);
