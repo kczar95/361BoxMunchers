@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.JTextArea;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
@@ -32,7 +33,7 @@ public final class GameView extends JFrame {
     private JSpinner multipleOf_Spinner;
 
     private JButton playButton;
-    private JButton pauseButton;
+    JButton timeRem;
     private JLabel gameLabel;
     private JButton leaderboardButton;
 
@@ -57,7 +58,16 @@ public final class GameView extends JFrame {
         infoPanel = new JPanel();
         infoPanel.setLayout(new GridLayout(2, 3, 0, 50));
         playButton = new JButton("Play");
-        pauseButton = new JButton("Pause");
+        playButton.addActionListener((java.awt.event.ActionEvent evnt) -> 
+                {
+                  playButtonActionPerformed(evnt);  
+                });
+        
+    
+        
+        timeRem = new JButton();
+        //timeRem.setEditable(false);
+        
         gameLabel = new JLabel("Multiple Of:", SwingConstants.CENTER);
 
         //Creating a spinner model: starts at 3, ends at 17, increments by 2
@@ -77,7 +87,7 @@ public final class GameView extends JFrame {
         scorePanel.add(scoreCounter);
 
         infoPanel.add(playButton);
-        infoPanel.add(pauseButton);
+        infoPanel.add(timeRem);
         infoPanel.add(leaderboardButton);
         infoPanel.add(gameLabel);
         infoPanel.add(multipleOf_Spinner);
@@ -142,5 +152,8 @@ public final class GameView extends JFrame {
         public void actionPerformed(ActionEvent e) {
             gameCtrl.modifyScore(theBox);
         }
+    }
+    private void playButtonActionPerformed(ActionEvent evnt){
+        GameView.this.gameCtrl.play();
     }
 }

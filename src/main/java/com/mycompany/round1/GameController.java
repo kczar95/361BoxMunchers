@@ -1,6 +1,10 @@
 package com.mycompany.round1;
 
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.Timer;
 
 /**
  *
@@ -14,6 +18,10 @@ public class GameController {
     private GameModel theGameModel;
     private String name;
     private String score;
+    private Timer gameTime;
+    private int i = 61;
+    private int delay = 1000;
+    private int gEnd = 0;
 
     public GameController() {
         theGameView = new GameView(this, 9, 9);
@@ -49,7 +57,28 @@ public class GameController {
 
     //this method will be run when the PLay button is clicked on
     public void play() {
-
+           startGameTimer();
+    }
+    
+    //this method will run the timer of the game
+    public void startGameTimer(){
+        ActionListener secondCounter = new ActionListener(){
+            public void actionPerformed(ActionEvent evt) {
+               if (i > gEnd)
+               {
+                i = i - 1;
+                theGameView.timeRem.setText(Integer.toString(i));
+                if(i < 11){
+                    theGameView.timeRem.setBackground(Color.YELLOW);
+                }
+               } else {
+                   gameTime.stop();
+               }
+            }
+        };
+            
+        gameTime = new Timer(delay, secondCounter);
+        gameTime.start();
     }
 
     public void getNewLeader(int theScore) {
