@@ -86,7 +86,7 @@ public final class GameView extends JFrame {
         scorePanel = new JPanel();
         Font myFont = new Font("Serif", Font.BOLD, 20);
 
-        scoreLabel = new JLabel("Score: ", SwingConstants.CENTER);
+        scoreLabel = new JLabel("Correct Hits: ", SwingConstants.CENTER);
         scoreCounter = new JLabel(score);
         scoreCounter.setFont(myFont);
         scoreCounter.setForeground(Color.blue);

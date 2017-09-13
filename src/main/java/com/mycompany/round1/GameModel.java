@@ -21,26 +21,29 @@ import java.util.Arrays;
 public class GameModel {
 
     private String connectionURL = "https://boxmunchers-6c015.firebaseio.com/leaderboard.json";
-    private ArrayList<Leader> currLeaders;
+    private ArrayList<String> currLeaders;
 
     public GameModel() {
         read();
+        System.out.println("made a model");
         submitScore(new ArrayList<String>(Arrays.asList("Daniel", "120")));
+        read();
     }
 
     public boolean checkScore(int score) {
-        if (currLeaders.size() < 10) {
+        read();
+        if (currLeaders.size() < 5) {
             return true;
         }
 
         //else, check if it is greater then any of them, if so remove that one and add this one
         int currSmallestLocation = 1;
         int currSmallest = 9999;
-        for (int i = 1; i < currLeaders.size(); i++) {
+        for (int i = 1; i < currLeaders.size(); i+=2) {
             //System.out.println(currLeaders.get(i));
-            if (currLeaders.get(i).getScore() < currSmallest) {
+            if (Integer.parseInt(currLeaders.get(i)) < currSmallest) {
                 currSmallestLocation = i;
-                currSmallest = currLeaders.get(i).getScore();
+                currSmallest = Integer.parseInt(currLeaders.get(i));
                 System.out.println(currSmallest);
                 System.out.println(currSmallestLocation);
             }
@@ -56,12 +59,25 @@ public class GameModel {
     //this will take in the curr users score / name and return a boolean if they are on the leaderboard
 
     public void submitScore(ArrayList<String> currNameScore) {
-        currLeaders.add(new Leader(currNameScore.get(0), Integer.parseInt(currNameScore.get(1))));
-        //write(currLeaders);
+        if(currLeaders == null){
+            currLeaders = new ArrayList<String>();
+        }
+        if(currLeaders.size() < 10){
+            currLeaders.add(currNameScore.get(0));
+        currLeaders.add(currNameScore.get(1));
+        write(currLeaders);
+        }
+        
+        
     }
 
     public ArrayList<Leader> getLeaders() {
-        return currLeaders;
+        read();
+        ArrayList<Leader> leaders = new ArrayList<Leader>();
+        for(int i = 0; i < currLeaders.size(); i += 2){
+            leaders.add(new Leader(currLeaders.get(i),Integer.parseInt(currLeaders.get(i+1))));
+        }
+        return leaders;
     }
 
     private HttpURLConnection connectToDB(String method) throws Exception {

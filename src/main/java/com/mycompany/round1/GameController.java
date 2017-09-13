@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.Timer;
 
 public class GameController {
@@ -23,6 +24,7 @@ public class GameController {
 
     public GameController() {
         theGameView = new GameView(this);
+        theGameModel = new GameModel();
         theGameView.playButton.addActionListener((java.awt.event.ActionEvent evnt) -> 
                 {
                   playButtonActionPerformed(evnt);  
@@ -72,6 +74,10 @@ public class GameController {
         theLeaderBoardView = new LeaderBoardView(this);
         theLeaderBoardView.setLocationRelativeTo(null);
         theLeaderBoardView.setVisible(true);
+        if(theGameModel.checkScore(15)){
+            System.out.println("checked true!");
+        }
+           
     }
 
     public void hideLeaderBoard() {
@@ -80,20 +86,26 @@ public class GameController {
     }
 
     public boolean checkLeaders() {
+        int score = i * 10;
+        getNewLeader(score);
         return false;
     }
     
     public void gameOver() {
+        playing = false;
         theGameView.scoreCounter.setText("GAME OVER");
         theGameView.scoreCounter.setForeground(Color.RED);
         theGameView.playButton.setEnabled(true);
         theGameView.multipleOf.setEnabled(true);
         theGameView.optionsBox.setEnabled(true);
+        boolean placed = theGameModel.checkScore(Integer.parseInt(score));
+        System.out.println(placed);
+        showLeaderBoard();
     }
 
     //this method will be run when the Play button is clicked on
     public void play() {
-        i = 18; //the length of the game, in seconds
+        i = 30; //the length of the game, in seconds
         playing = true;
         
         defaultColor = theGameView.playButton.getBackground();
@@ -109,40 +121,41 @@ public class GameController {
     }
     
     //this method will run the timer of the game
-    public void startGameTimer(){
-        ActionListener secondCounter = new ActionListener(){
+    public void startGameTimer() {
+        ActionListener secondCounter = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-               if (i > gEnd){
-                    i = i - 1;
-                    theGameView.timeRem.setText(Integer.toString(i));
-                    if(i < 16){
-                    theGameView.timeRem.setBackground(Color.YELLOW);
+                if (playing) {
+                    if (i > gEnd) {
+                        i = i - 1;
+                        theGameView.timeRem.setText(Integer.toString(i));
+                        if (i < 16) {
+                            theGameView.timeRem.setBackground(Color.YELLOW);
+                        }
+                    } else {
+                        gameTime.stop();
+                        playing = false;
+                        gameOver();
+                    }
+                } else {
+                    gameTime.stop();
                 }
-               } else {
-                   gameTime.stop();
-                   playing = false;
-                   gameOver();   
-               }
             }
-        };       
+        };
         gameTime = new Timer(delay, secondCounter);
         gameTime.start();
     }
 
     public void getNewLeader(int theScore) {
         theGameModel = new GameModel();
-        name = "";
-        boolean placed = theGameModel.checkScore(theScore);
+        name = "winner";
         score = String.valueOf(theScore);
         ArrayList<String> theScoreAndPlayer = new ArrayList();
         theScoreAndPlayer.add(name);
         theScoreAndPlayer.add(score);
-        if (placed) {
-            theGameModel.submitScore(theScoreAndPlayer);
-            showLeaderBoard();
-        } else {
-            showLeaderBoard();
-        }
+        theGameModel.submitScore(theScoreAndPlayer);
+        showLeaderBoard();
+  
+        
     }
     
     public void incScore() {
@@ -150,8 +163,7 @@ public class GameController {
         score = Integer.toString(scoreInt);
         updateScore();
         if (Integer.parseInt(score) == 10) {
-            boolean placed = checkLeaders();
-            showLeaderBoard();
+            gameOver();
         }
     }
 
@@ -163,5 +175,6 @@ public class GameController {
 
     public void updateScore() {
         theGameView.scoreCounter.setText(score);
+        theGameView.scoreCounter.setForeground(Color.blue);
     }
 }

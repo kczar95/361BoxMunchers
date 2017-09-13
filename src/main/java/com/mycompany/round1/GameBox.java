@@ -1,6 +1,7 @@
 package com.mycompany.round1;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -14,6 +15,7 @@ public class GameBox extends JButton implements ActionListener {
         super();
         theView = gv;
         this.setText(str);
+        this.setFont(new Font("Serif", 0, 20));
         this.addActionListener(this);
         this.setOpaque(true);
         this.setBackground(null);
@@ -25,12 +27,13 @@ public class GameBox extends JButton implements ActionListener {
     @Override
     //Everything that happens when a gameboard button is pressed
     public void actionPerformed(ActionEvent e) {
-        if (isCorrect(theView.multipleOf.getText(), Integer.parseInt(this.getText())) && !selected) {
+        
+        if (isCorrect(theView.multipleOf.getText(), Integer.parseInt(this.getText())) && !selected && theView.gameCtrl.isPlaying()) {
             this.setBackground(Color.GREEN);
             this.setForeground(Color.GREEN);
             selected = true;
             theView.gameCtrl.incScore();
-        } else if (!selected) {
+        } else if (!selected && theView.gameCtrl.isPlaying()) {
             this.setBackground(Color.RED);
             selected = true;
             theView.gameCtrl.decScore();

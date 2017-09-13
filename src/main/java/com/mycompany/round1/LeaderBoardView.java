@@ -7,6 +7,7 @@ package com.mycompany.round1;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -56,10 +57,13 @@ public class LeaderBoardView extends JFrame {
         DefaultTableModel tableModel = (DefaultTableModel) theTable.getModel();
         tableModel.setColumnIdentifiers(columnNames);
         
-//        for(Leader leader : gameModel.getLeaders()){
-//            Object row[] = {leader.getName(), leader.getScore()};
-//            tableModel.addRow(row);
-//        }
+        ArrayList<Leader> leaders = gameModel.getLeaders();
+        System.out.println(leaders);
+        
+        for(Leader leader : leaders){
+            Object row[] = {leader.getName(), Integer.toString(leader.getScore())};
+            tableModel.addRow(row);
+        }
         
         scorePanel.add(theTable);
         add(scorePanel, BorderLayout.CENTER);
