@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 public class GameController {
@@ -74,9 +75,7 @@ public class GameController {
         theLeaderBoardView = new LeaderBoardView(this);
         theLeaderBoardView.setLocationRelativeTo(null);
         theLeaderBoardView.setVisible(true);
-        if(theGameModel.checkScore(15)){
-            System.out.println("checked true!");
-        }
+        
            
     }
 
@@ -85,11 +84,6 @@ public class GameController {
         theLeaderBoardView.dispose();
     }
 
-    public boolean checkLeaders() {
-        int score = i * 10;
-        getNewLeader(score);
-        return false;
-    }
     
     public void gameOver() {
         playing = false;
@@ -98,8 +92,12 @@ public class GameController {
         theGameView.playButton.setEnabled(true);
         theGameView.multipleOf.setEnabled(true);
         theGameView.optionsBox.setEnabled(true);
-        boolean placed = theGameModel.checkScore(Integer.parseInt(score));
-        System.out.println(placed);
+        boolean placed = theGameModel.checkScore(i * 10);
+        if(placed){
+            String name = JOptionPane.showInputDialog(theGameView, "You win! what is your name?", "WINNER!", 3);
+            String score = Integer.toString(i * 10);
+            theGameModel.submitScore(new ArrayList<String>(Arrays.asList(name,score)));
+        }
         showLeaderBoard();
     }
 

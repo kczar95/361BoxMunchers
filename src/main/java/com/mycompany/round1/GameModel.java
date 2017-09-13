@@ -25,9 +25,6 @@ public class GameModel {
 
     public GameModel() {
         read();
-        System.out.println("made a model");
-        submitScore(new ArrayList<String>(Arrays.asList("Daniel", "120")));
-        read();
     }
 
     public boolean checkScore(int score) {
@@ -40,12 +37,9 @@ public class GameModel {
         int currSmallestLocation = 1;
         int currSmallest = 9999;
         for (int i = 1; i < currLeaders.size(); i+=2) {
-            //System.out.println(currLeaders.get(i));
             if (Integer.parseInt(currLeaders.get(i)) < currSmallest) {
                 currSmallestLocation = i;
                 currSmallest = Integer.parseInt(currLeaders.get(i));
-                System.out.println(currSmallest);
-                System.out.println(currSmallestLocation);
             }
         }
         if (score > currSmallest) {
@@ -59,15 +53,15 @@ public class GameModel {
     //this will take in the curr users score / name and return a boolean if they are on the leaderboard
 
     public void submitScore(ArrayList<String> currNameScore) {
-        if(currLeaders == null){
+        if (currLeaders == null) {
             currLeaders = new ArrayList<String>();
         }
-        if(currLeaders.size() < 10){
+        if (currLeaders.size() < 10) {
             currLeaders.add(currNameScore.get(0));
-        currLeaders.add(currNameScore.get(1));
-        write(currLeaders);
+            currLeaders.add(currNameScore.get(1));
+            write(currLeaders);
         }
-        
+
         
     }
 
