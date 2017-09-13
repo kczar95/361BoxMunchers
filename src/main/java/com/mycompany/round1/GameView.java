@@ -6,10 +6,13 @@
 package com.mycompany.round1;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,6 +21,7 @@ import javax.swing.JTextArea;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 
 public final class GameView extends JFrame {
 
@@ -28,7 +32,8 @@ public final class GameView extends JFrame {
     private JLabel scoreCounter;
     private JLabel scoreLabel;
     private String score = "0";
-
+    private JComboBox optionsBox;
+    
     private SpinnerModel multipleModel;
     private JSpinner multipleOf_Spinner;
 
@@ -47,10 +52,11 @@ public final class GameView extends JFrame {
         this.gameCtrl = gameCtrl;
         multipleOf_Spinner = new JSpinner();
         createInfoPanel();
-        createGameBoardPanel(rows, cols);
+        //createGameBoardPanel(rows, cols);
         this.setVisible(true);
         setBounds(0, 0, 750, 550);
         setResizable(false);
+        this.setLocationRelativeTo(null);
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     }
 
@@ -68,11 +74,14 @@ public final class GameView extends JFrame {
         timeRem = new JButton();
         //timeRem.setEditable(false);
         
-        gameLabel = new JLabel("Multiple Of:", SwingConstants.CENTER);
+        gameLabel = new JLabel("Game Mode:", SwingConstants.CENTER);
 
-        //Creating a spinner model: starts at 3, ends at 17, increments by 2
-        multipleModel = new SpinnerNumberModel(3, 3, 17, 2);
-        multipleOf_Spinner = new JSpinner(multipleModel);
+//        //Creating a spinner model: starts at 3, ends at 17, increments by 2
+//        multipleModel = new SpinnerNumberModel(3, 3, 17, 2);
+//        multipleOf_Spinner = new JSpinner(multipleModel);
+
+        String[] gameModes = {"Prime numbers", "Other games will go here", "Once we implement them"};
+        optionsBox = new JComboBox(gameModes);
 
         leaderboardButton = new JButton("Leaderboard");
         leaderboardButton.addActionListener((java.awt.event.ActionEvent evt) -> {
@@ -80,17 +89,21 @@ public final class GameView extends JFrame {
         });
 
         scorePanel = new JPanel();
+        Font myFont = new Font("Serif", Font.BOLD, 20);
 
         scoreLabel = new JLabel("Score: ", SwingConstants.CENTER);
         scoreCounter = new JLabel(score);
+        scoreCounter.setFont(myFont);
+        scoreCounter.setForeground(Color.blue);
         scorePanel.add(scoreLabel);
         scorePanel.add(scoreCounter);
+        timeRem.setFont(myFont);
 
         infoPanel.add(playButton);
         infoPanel.add(timeRem);
         infoPanel.add(leaderboardButton);
         infoPanel.add(gameLabel);
-        infoPanel.add(multipleOf_Spinner);
+        infoPanel.add(optionsBox);
         infoPanel.add(scorePanel);
         add(infoPanel, BorderLayout.NORTH);
     }
@@ -122,6 +135,25 @@ public final class GameView extends JFrame {
         this.getContentPane().revalidate();
         this.getContentPane().repaint();
     }
+    
+    public void setGameOver(){
+        this.getContentPane().remove(infoPanel);
+        infoPanel.remove(scorePanel);
+        scorePanel.remove(scoreCounter);
+        scoreCounter.setText("GAME OVER");
+        scoreCounter.setForeground(Color.RED);
+        infoPanel.add(scoreCounter);
+        this.getContentPane().add(infoPanel, BorderLayout.NORTH);
+        this.getContentPane().revalidate();
+        this.getContentPane().repaint();
+    }
+    
+    private void removeCurrentBoard() {
+        this.getContentPane().remove(gamePanel);
+        gamePanel.removeAll();
+        this.getContentPane().revalidate();
+        this.getContentPane().repaint();
+    }
 
     public void createGameBoardPanel(int rows, int cols) {
         gamePanel = new JPanel();
@@ -135,6 +167,8 @@ public final class GameView extends JFrame {
         
         add(gamePanel);
     }
+    
+    
 
     private void leaderboardButtonActionPerformed(ActionEvent evt) {
         GameView.this.gameCtrl.showLeaderBoard();
@@ -150,10 +184,20 @@ public final class GameView extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            gameCtrl.modifyScore(theBox);
+            if(gameCtrl.isPlaying()){
+                gameCtrl.modifyScore(theBox);
+            }
+            
         }
     }
     private void playButtonActionPerformed(ActionEvent evnt){
+        try{
+            GameView.this.removeCurrentBoard();
+        }catch (Exception e){
+            
+        }
+        
+        GameView.this.createGameBoardPanel(9, 9);
         GameView.this.gameCtrl.play();
     }
 }

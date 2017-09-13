@@ -22,9 +22,14 @@ public class GameController {
     private int i = 61;
     private int delay = 1000;
     private int gEnd = 0;
+    private boolean playing = false;
 
     public GameController() {
         theGameView = new GameView(this, 9, 9);
+    }
+    
+    public boolean isPlaying() {
+        return playing;
     }
 
     public void showGameView() {
@@ -33,9 +38,9 @@ public class GameController {
     }
 
     public void modifyScore(GameBox theBox) {
-        if (theBox.isCorrect() && !theBox.isSelected()) {
+        if (theBox.isCorrect() && !theBox.wasSelected()) {
             theGameView.incScore();
-        } else if (!theBox.isSelected()) {
+        } else if (!theBox.wasSelected()) {
             theGameView.decScore();
         }
     }
@@ -54,9 +59,14 @@ public class GameController {
     public boolean checkLeaders() {
         return false;
     }
+    
+    public void gameOver() {
+        theGameView.setGameOver();
+    }
 
     //this method will be run when the PLay button is clicked on
     public void play() {
+        playing = true;
            startGameTimer();
     }
     
@@ -73,6 +83,8 @@ public class GameController {
                 }
                } else {
                    gameTime.stop();
+                   playing = false;
+                   gameOver();
                }
             }
         };

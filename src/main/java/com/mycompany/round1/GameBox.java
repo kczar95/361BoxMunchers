@@ -14,12 +14,19 @@ public class GameBox extends JButton implements ActionListener {
         int value = (int) (Math.random() * 200);
         this.setText(value + "");
         this.addActionListener(this);
+        this.setOpaque(true);
+        this.setBackground(null);
+//        this.setBorderPainted(false);
+        this.setFocusable(false);
+        
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        
         if (isCorrect() && !selected) {
             this.setBackground(Color.GREEN);
+            this.setForeground(Color.GREEN);
             selected = true;
         } else if (!selected) {
             this.setBackground(Color.RED);
@@ -49,6 +56,10 @@ public class GameBox extends JButton implements ActionListener {
 
     private int getBoxNumber() {
         return Integer.parseInt(this.getText());
+    }
+    
+    public boolean wasSelected() {
+        return selected;
     }
 
     private boolean isPrime(int boxNumber) {
